@@ -26,6 +26,7 @@ export const FileUpload = ({
                 <Image 
                 fill
                 src={value}
+                sizes="(max-width: 48px) 100vw, 48px"
                 alt="Upload"
                 className="rounded-full"
                 />

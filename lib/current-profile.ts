@@ -9,5 +9,6 @@ export const currentProfile = async () => {
         where: { 
             userId: userId 
         }
-    })
+    });
+    return profile;
 }
