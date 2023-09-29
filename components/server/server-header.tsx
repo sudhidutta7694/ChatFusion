@@ -53,6 +53,8 @@ export const ServerHeader = ({
                 )}
                 {isAdmin && (
                     <DropdownMenuItem
+                    onClick={() =>
+                        onOpen("manageMembers", { server })}
                         className=" px-3 py-2 text-sm cursor-pointer">
                         Manage Members
                         <Users className="h-4 w-4 ml-auto" />

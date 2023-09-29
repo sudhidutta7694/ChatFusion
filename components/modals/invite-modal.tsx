@@ -1,9 +1,9 @@
 "use client";
 
+import classnames from "classnames";
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
@@ -15,7 +15,6 @@ import { Check, Copy, RefreshCw } from "lucide-react";
 import { useOrigin } from "@/hooks/use-origin";
 import { useState } from "react";
 import axios from "axios";
-
 
 export const InviteModal = () => {
     const { onOpen, isOpen, onClose, type, data } = useModal();
@@ -30,6 +29,9 @@ export const InviteModal = () => {
     const [copied, setCopied] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
+    const refreshClass = classnames("w-4 h-4 ml-2", {
+        "animate-spin": isLoading,
+    });
     const onCopy = () => {
         navigator.clipboard.writeText(inviteUrl);
         setCopied(true);
@@ -43,7 +45,7 @@ export const InviteModal = () => {
         try {
             setIsLoading(true);
             const response = await axios.patch(`/api/servers/${server?.id}/invite-code`);
-            onOpen("invite", { server: response.data})
+            onOpen("invite", { server: response.data })
 
             setTimeout(() => {
                 setIsLoading(false);
@@ -70,9 +72,9 @@ export const InviteModal = () => {
                         Server Invite Link
                     </Label>
                     <div className="flex items-center mt-2 gap-x-2">
-                        <Input 
-                        disabled={isLoading}
-                        className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                        <Input
+                            disabled={isLoading}
+                            className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
                             value={inviteUrl}>
 
                         </Input>
@@ -90,8 +92,7 @@ export const InviteModal = () => {
                         size={"sm"}
                         className="text-xs text-zinc-500 mt-4">
                         Generate a new link
-                        <RefreshCw className="w-4 h-4 ml-2" />
-                    </Button>
+                        <RefreshCw className={refreshClass} />                    </Button>
                 </div>
             </DialogContent>
         </Dialog>
