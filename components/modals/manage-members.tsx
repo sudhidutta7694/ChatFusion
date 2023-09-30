@@ -109,7 +109,7 @@ export const ManageMembersModal = () => {
                                 src={member.profile.image}
                             />
                             <div className="flex flex-col gap-y-1">
-                                <div className="text-xs font-semibold flex items-center uppercase gap-x-1">
+                                <div className="text-xs font-semibold flex items-center gap-x-1">
                                     {member.profile.name}
                                     {RoleIconMap[member.role]}
                                 </div>
