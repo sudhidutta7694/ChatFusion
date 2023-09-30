@@ -66,8 +66,21 @@ export const ServerSidebar = async ({
         return channel.type === ChannelType.VIDEO
     })
 
+    const admin = server?.Member.filter((member) => {
+        return (member.role === "ADMIN")
+    })
+
+    const moderators = server?.Member.filter((member) => {
+        return (member.profileId !== profile.id && member.role === "MODERATOR")
+    })
+
+    const guests = server?.Member.filter((member) => {
+        return (member.profileId !== profile.id && member.role === "GUEST")
+    })
+
+
     const members = server?.Member.filter((member) => {
-        return member.profileId === profile.id
+        return (member.profileId !== profile.id)
     })
 
 
@@ -195,19 +208,61 @@ export const ServerSidebar = async ({
                     )
                 }
                 {
-                    !!members?.length && (
+                    !!admin?.length && (
                         <div className="mb-2">
                             <ServerSection
-                                label="Members"
+                                label="ADMIN"
                                 role={role}
                                 sectionType="members"
                                 server={server}
                             />
                             <div className="space-y-[2px]">
-                                {members.map((member) => (
+                                {admin.map((admin) => (
                                     <ServerMember
-                                        key={member.id}
-                                        member={member}
+                                        key={admin.id}
+                                        member={admin}
+                                        server={server}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    )
+                }
+                {
+                    !!moderators?.length && (
+                        <div className="mb-2">
+                            <ServerSection
+                                label="moderators"
+                                role={role}
+                                sectionType="members"
+                                server={server}
+                            />
+                            <div className="space-y-[2px]">
+                                {moderators.map((moderator) => (
+                                    <ServerMember
+                                        key={moderator.id}
+                                        member={moderator}
+                                        server={server}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    )
+                }
+                {
+                    !!guests?.length && (
+                        <div className="mb-2">
+                            <ServerSection
+                                label="guests"
+                                role={role}
+                                sectionType="members"
+                                server={server}
+                            />
+                            <div className="space-y-[2px]">
+                                {guests.map((guest) => (
+                                    <ServerMember
+                                        key={guest.id}
+                                        member={guest}
                                         server={server}
                                     />
                                 ))}
