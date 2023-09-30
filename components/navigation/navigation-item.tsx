@@ -37,8 +37,8 @@ export const NavigationItem = ({
                     params?.serverId === id ? "h-[36px]" : "h-[8px]",
                 )} />
                 <div className={cn(
-                    "group relative flex mx-3 my-[8px] h-[48px] w-[48px] rounded-[24px] group-hover:rounded-[16px] transition-all overflow-hidden",
-                    params?.serverId === id && "bg-primary/10 text-primary rounded-[16px]",
+                    "group relative flex mx-3 my-[14px]  h-[48px] w-[48px] rounded-[24px] brightness-[0.85]     group-hover:brightness-95  group-hover:rounded-[20px] transition-all overflow-hidden",
+                    params?.serverId === id && "brightness-100 group-hover:brightness-100 bg-primary-10 text-primary group-hover:rounded-[16px] rounded-[16px]",
                 )}>
                     <Image
                         fill
