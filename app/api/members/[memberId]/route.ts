@@ -31,7 +31,7 @@ export async function DELETE(
                 profileId: profile.id,
             },
             data: {
-                Member: {
+                members: {
                     deleteMany: {
                         id: params.memberId,
                         profileId: {
@@ -41,7 +41,7 @@ export async function DELETE(
                 }
             },
             include: {
-                Member: {
+                members: {
                     include: {
                         profile: true,
                     },
@@ -88,7 +88,7 @@ export async function PATCH(
                 profileId: profile.id,
             },
             data: {
-                Member: {
+                members: {
                     update: {
                         where: {
                             id: params.memberId,
@@ -103,7 +103,7 @@ export async function PATCH(
                 }
             },
             include: {
-                Member: {
+                members: {
                     include: {
                         profile: true,
                     },

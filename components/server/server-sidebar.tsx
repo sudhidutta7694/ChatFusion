@@ -1,6 +1,6 @@
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
-import { ChannelType } from "@/prisma/generated/client";
+import { ChannelType } from "@prisma/client";
 import { redirect } from "next/navigation";
 import { ServerHeader } from "./server-header";
 import { ScrollArea } from "../ui/scroll-area";
@@ -40,12 +40,12 @@ export const ServerSidebar = async ({
             id: serverId,
         },
         include: {
-            Channel: {
+            channels: {
                 orderBy: {
                     createdAt: "asc",
                 },
             },
-            Member: {
+            members: {
                 include: {
                     profile: true,
                 },
@@ -56,30 +56,30 @@ export const ServerSidebar = async ({
         }
     });
 
-    const textChannels = server?.Channel.filter((channel) => {
+    const textChannels = server?.channels.filter((channel) => {
         return channel.type === ChannelType.TEXT
     })
-    const audioChannels = server?.Channel.filter((channel) => {
+    const audioChannels = server?.channels.filter((channel) => {
         return channel.type === ChannelType.AUDIO
     })
-    const videoChannels = server?.Channel.filter((channel) => {
+    const videoChannels = server?.channels.filter((channel) => {
         return channel.type === ChannelType.VIDEO
     })
 
-    const admin = server?.Member.filter((member) => {
+    const admin = server?.members.filter((member) => {
         return (member.role === "ADMIN")
     })
 
-    const moderators = server?.Member.filter((member) => {
+    const moderators = server?.members.filter((member) => {
         return (member.profileId !== profile.id && member.role === "MODERATOR")
     })
 
-    const guests = server?.Member.filter((member) => {
+    const guests = server?.members.filter((member) => {
         return (member.profileId !== profile.id && member.role === "GUEST")
     })
 
 
-    const members = server?.Member.filter((member) => {
+    const members = server?.members.filter((member) => {
         return (member.profileId !== profile.id)
     })
 
@@ -87,7 +87,7 @@ export const ServerSidebar = async ({
     if (!server) return redirect('/')
 
 
-    const role = server.Member.find((member) => {
+    const role = server.members.find((member) => {
         return member.profileId === profile.id
     })?.role;
 
