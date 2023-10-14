@@ -93,27 +93,27 @@ export const ManageMembersModal = () => {
 
     return (
         <Dialog open={isModalOpen} onOpenChange={onClose}>
-            <DialogContent className="bg-white text-black overflow-hidden">
+            <DialogContent className="bg-secondary text-primary overflow-hidden">
                 <DialogHeader className="pt-8 px-6">
                     <DialogTitle className="text-2xl text-center font-bold">
                         Manage Members
                     </DialogTitle>
-                    <DialogDescription className="text-center text-zinc-500 ">
-                        {server?.Member?.length} members
+                    <DialogDescription className="text-center text-zinc-500 dark:text-zinc-200">
+                        {server?.members?.length} members
                     </DialogDescription>
                 </DialogHeader>
                 <ScrollArea className="mt-8 max-h-[420px] pr-6">
                     {server?.members?.map(member => (
                         <div key={member.id} className="flex items-center gap-x-2 mb-6">
                             <UserAvatar
-                                src={member.profile.image}
+                                src={member.profile.imageUrl}
                             />
                             <div className="flex flex-col gap-y-1">
                                 <div className="text-xs font-semibold flex items-center gap-x-1">
                                     {member.profile.name}
                                     {RoleIconMap[member.role]}
                                 </div>
-                                <p className="text-xs text-zinc-500">
+                                <p className="text-xs text-zinc-500 dark:text-zinc-200">
                                     {member.profile.email}
                                 </p>
                             </div>
@@ -121,7 +121,7 @@ export const ManageMembersModal = () => {
                                 <div className="ml-auto">
                                     <DropdownMenu>
                                         <DropdownMenuTrigger>
-                                            <MoreVertical className="h-4 w-4 text-zinc-500" />
+                                            <MoreVertical className="h-4 w-4 text-zinc-500 dark:text-zinc-200" />
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent side="left" className="h-20">
                                             <DropdownMenuSub>

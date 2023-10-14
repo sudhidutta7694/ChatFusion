@@ -10,11 +10,13 @@ import { LeaveServerModal } from "../modals/leave-server-modal";
 import { DeleteServerModal } from "../modals/delete-server-modal";
 import { DeleteChannelModal } from "../modals/delete-channel-modal";
 import { EditChannelModal } from "../modals/edit-channel-modal";
+import { MessageFileModal } from "../modals/message-file-modal";
+// import { useTheme } from "next-themes";
 
 
 export const ModalProvider = () => {
     const [isMounted, setIsMounted] = useState(false);
-
+    // const {resolvedTheme} = useTheme();
     useEffect(() => {
         setIsMounted(true);
     }, [])
@@ -23,7 +25,7 @@ export const ModalProvider = () => {
 
     return (
         <>
-            <CreateServerModal />
+            <CreateServerModal/>
             <InviteModal />
             <EditServerModal />
             <ManageMembersModal />
@@ -32,6 +34,7 @@ export const ModalProvider = () => {
             <DeleteServerModal />
             <DeleteChannelModal />
             <EditChannelModal />
+            <MessageFileModal />
         </>
     )
 }

@@ -25,6 +25,7 @@ export const ServerMember = ({
     const params = useParams();
     const router = useRouter();
     const onClick = () => {
+        // console.log('I am clicked!');
         router.push(`/servers/${params?.serverId}/conversations/${member?.id}`);
     }
 
