@@ -39,7 +39,7 @@ export const ManageMembersModal = () => {
     const router = useRouter();
     const { onOpen, isOpen, onClose, type, data } = useModal();
     const [LoadingId, setLoadingId] = useState("")
-    const isModalOpen = isOpen && type === "manageMembers";
+    const isModalOpen = isOpen && type === "members";
     const { server } = data as {
         server: ServerWithMembersWithProfiles
     };
@@ -59,7 +59,7 @@ export const ManageMembersModal = () => {
 
             router.refresh()
 
-            onOpen("manageMembers", {
+            onOpen("members", {
                 server: response.data
             })
         } catch (error) {
@@ -81,7 +81,7 @@ export const ManageMembersModal = () => {
 
             const response = await axios.patch(url, { role })
             router.refresh();
-            onOpen("manageMembers", {
+            onOpen("members", {
                 server: response.data
             });
         } catch (err) {

@@ -8,14 +8,14 @@ import { useState } from "react";
 
 export const QueryProvider = ({
     children
-}:{
+}: {
     children: React.ReactNode
 }) => {
-    const [queryClient, setQueryClient]= useState();
-    
+    const [queryClient] = useState(() => new QueryClient());
+
     return (
-        <div className="">
-            
-        </div>
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
     )
 }
