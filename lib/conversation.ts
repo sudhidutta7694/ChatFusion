@@ -32,8 +32,8 @@ const findConversation = async (memberOneId: string, memberTwoId: string) => {
         }
       }
     });
-  } catch (error){
-    return (error);
+  } catch (error) {
+    return null;
   }
 }
 
@@ -56,8 +56,8 @@ const createNewConversation = async (memberOneId: string, memberTwoId: string) =
           }
         }
       }
-    })
-  } catch(error) {
-    return error;
+    });
+  } catch (error) {
+    return null;
   }
 }

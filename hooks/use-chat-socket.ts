@@ -20,13 +20,13 @@ export const useChatSocket = ({
     updateKey,
     queryKey
 }: ChatSocketProps) => {
-    const socket = useSocket();
+    const {socket} = useSocket();
     const queryClient = useQueryClient();
 
     useEffect(() => {
         if (!socket) return;
 
-        socket.on(updateKey, (message: MessageWithMemberWithProfile) => {
+        const handleUpdate = (message: MessageWithMemberWithProfile) => {
             queryClient.setQueryData([queryKey], (oldData: any) => {
                 if (!oldData || !oldData.pages || oldData.pages.length === 0) return oldData;
 
@@ -48,9 +48,9 @@ export const useChatSocket = ({
                     pages: newData,
                 }
             })
-        });
+        };
 
-        socket.on(addKey, (message: MessageWithMemberWithProfile) => {
+        const handleAdd = (message: MessageWithMemberWithProfile) => {
             queryClient.setQueryData([queryKey], (oldData: any) => {
                 if (!oldData || !oldData.pages || oldData.pages.length === 0) {
                     return {
@@ -75,7 +75,10 @@ export const useChatSocket = ({
                     pages: newData,
                 }
             })
-        });
+        };
+
+        socket.on(updateKey, handleUpdate);
+        socket.on(addKey, handleAdd)
 
         return () => {
             socket.off(updateKey);
