@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
-    TooltipTrigger
-} from "@/components/ui/tooltip";
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 interface ActionTooltipProps {
     label: string;
@@ -13,7 +13,6 @@ interface ActionTooltipProps {
     side?: "top" | "right" | "bottom" | "left";
     align?: "start" | "center" | "end";
 }
-
 
 export const ActionTooltip = ({
     label,
@@ -23,7 +22,7 @@ export const ActionTooltip = ({
 }: ActionTooltipProps) => {
     return (
         <TooltipProvider>
-            <Tooltip delayDuration={30}>
+            <Tooltip delayDuration={50}>
                 <TooltipTrigger asChild>
                     {children}
                 </TooltipTrigger>
@@ -36,3 +35,4 @@ export const ActionTooltip = ({
         </TooltipProvider>
     )
 }
+
