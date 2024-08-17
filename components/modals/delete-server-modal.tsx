@@ -1,40 +1,47 @@
 "use client";
 
-import classnames from "classnames";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+
 import {
     Dialog,
     DialogContent,
     DialogDescription,
     DialogFooter,
     DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog";
+    DialogTitle    
+} from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button";
+
 import { useModal } from "@/hooks/use-modal-store";
 import { useState } from "react";
-import axios from "axios";
-import { Button } from "../ui/button";
-import { useRouter } from "next/navigation";
+
+
+
 
 export const DeleteServerModal = () => {
-    const { onOpen, isOpen, onClose, type, data } = useModal();
+    const { isOpen, onClose, type, data} = useModal();
     const router = useRouter();
 
     const isModalOpen = isOpen && type === "deleteServer";
     const { server } = data;
 
-    const [copied, setCopied] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    const onClick = async () => {
+    const onClick =async () => {
+        
         try {
             setIsLoading(true);
-
+            
             await axios.delete(`/api/servers/${server?.id}`);
+
             onClose();
             router.refresh();
             router.push("/");
-        } catch (err) {
-            console.log(err);
+
+        } catch (error) {
+            console.log(error);
+            
         } finally {
             setIsLoading(false);
         }
@@ -48,14 +55,13 @@ export const DeleteServerModal = () => {
                         Delete Server
                     </DialogTitle>
                     <DialogDescription className="text-center text-zinc-500">
-                        Are you sure you want to do this?<br /> 
+                        Are you sure you want to do this? <br />
                         <span className="font-semibold text-indigo-500">{server?.name}</span> will be permanently deleted.
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter className="bg-gray-100 px-6 py-4">
                     <div className="flex items-center justify-between w-full">
                         <Button
-
                             disabled={isLoading}
                             onClick={onClose}
                             variant="ghost"
@@ -63,9 +69,10 @@ export const DeleteServerModal = () => {
                             Cancel
                         </Button>
                         <Button
-                            variant="primary"
                             disabled={isLoading}
-                            onClick={() => onClick()}>
+                            onClick={onClick}
+                            variant="primary"
+                        >
                             Confirm
                         </Button>
                     </div>

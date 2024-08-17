@@ -1,45 +1,47 @@
 import { useEffect, useState } from "react";
 
-type ChatscrollProps = {
+type ChatScrollProps = {
     chatRef: React.RefObject<HTMLDivElement>;
     bottomRef: React.RefObject<HTMLDivElement>;
-    loadMore: () => void;
     shouldLoadMore: boolean;
+    loadMore: () => void;
     count: number;
 };
-
 
 export const useChatScroll = ({
     chatRef,
     bottomRef,
-    loadMore,
     shouldLoadMore,
+    loadMore,
     count,
-}: ChatscrollProps) => {
-    const [hasInitialised, setHasInitialised] = useState(false);
+}: ChatScrollProps) => {
+    const [hasInitialized, setHasInitialized] = useState(false);
+
     useEffect(() => {
-        const topDiv = chatRef.current;
+        const topDiv = chatRef?.current;
+
         const handleScroll = () => {
-            if (topDiv) {
-                if (topDiv.scrollTop === 0 && shouldLoadMore) {
-                    loadMore();
-                }
+            const scrollTop = topDiv?.scrollTop;
+
+            if (scrollTop === 0 && shouldLoadMore) {
+                loadMore()
             }
         };
 
         topDiv?.addEventListener("scroll", handleScroll);
+
         return () => {
             topDiv?.removeEventListener("scroll", handleScroll);
         }
-    }, [chatRef, loadMore, shouldLoadMore]);
+    }, [shouldLoadMore, loadMore, chatRef]);
 
     useEffect(() => {
-        const bottomDiv = bottomRef.current;
+        const bottomDiv = bottomRef?.current;
         const topDiv = chatRef.current;
+
         const shouldAutoScroll = () => {
-            if (!hasInitialised && bottomDiv) {
-                bottomDiv.scrollIntoView({ behavior: "smooth" });
-                setHasInitialised(true);
+            if (!hasInitialized && bottomDiv) {
+                setHasInitialized(true);
                 return true;
             }
 
@@ -48,13 +50,17 @@ export const useChatScroll = ({
             }
 
             const distanceFromBottom = topDiv.scrollHeight - topDiv.scrollTop - topDiv.clientHeight;
+
             return distanceFromBottom <= 100;
         }
 
         if (shouldAutoScroll()) {
             setTimeout(() => {
-                bottomDiv?.scrollIntoView({ behavior: "smooth" });
-            }, 100);
+                bottomRef.current?.scrollIntoView({
+                    behavior: "smooth",
+                });
+            }, 100)
         }
-    }, [count, bottomRef, hasInitialised]);
+    }, [bottomRef, chatRef, count, hasInitialized]);
 }
+

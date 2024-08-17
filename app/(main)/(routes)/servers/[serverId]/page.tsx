@@ -3,18 +3,20 @@ import { db } from "@/lib/db";
 import { redirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
-interface ServerIdprops {
+interface ServerIdPageProps {
     params: {
         serverId: string;
     }
-}
+};
 
 const ServerIdPage = async ({
     params
-}: ServerIdprops) => {
+}: ServerIdPageProps) => {
     const profile = await currentProfile();
 
-    if (!profile) return redirectToSignIn;
+    if (!profile) {
+        return redirectToSignIn();
+    }
 
     const server = await db.server.findUnique({
         where: {
@@ -37,13 +39,13 @@ const ServerIdPage = async ({
         }
     })
 
-    const initialChannel = server?.channels[0];
+    const initialChannel = server?.channels[0]
 
     if (initialChannel?.name !== "general") {
         return null;
     }
 
-    return redirect(`/servers/${params?.serverId}/channels/${initialChannel?.id}`)
+    return redirect(`/servers/${params.serverId}/channels/${initialChannel?.id}`)
 }
-
+ 
 export default ServerIdPage;
