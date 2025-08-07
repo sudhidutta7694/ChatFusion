@@ -1,40 +1,32 @@
-# Use an official Node.js runtime as the base image
-FROM node:alpine as builder
-
-# Set the working directory inside the container
+# Build stage
+FROM node:alpine AS builder
 WORKDIR /usr/src/app
-
-# Copy package.json and package-lock.json to the container
 COPY package*.json ./
-
-# Install the app dependencies inside the container
-RUN npm install
-
-# Copy the app source code to the container
+RUN npm ci --only=production && npm cache clean --force
 COPY . .
-
-# Generate Prisma Schema
 RUN npx prisma generate
-
-# Build the Next.js app
 RUN npm run build
 
-# Start with a clean image to reduce final image size
-FROM node:alpine as production
-
+# Production stage  
+FROM node:alpine AS production
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json to the container for the dependencies required in production
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nextjs -u 1001
+
 COPY package*.json ./
+RUN npm ci --only=production && npm cache clean --force
 
-# Install only production dependencies
-RUN npm install --only=production  --verbose
+# Copy built application
+COPY --from=builder /usr/src/app/.next ./.next
+COPY --from=builder /usr/src/app/public ./public
+COPY --from=builder /usr/src/app/node_modules/.prisma ./node_modules/.prisma
 
-# Copy the built files from the previous stage
-COPY --from=builder /usr/src/app/ .
+# Generate Prisma client for production
+RUN npx prisma generate
 
-# Expose the port the app runs on
+USER nextjs
 EXPOSE 3000
 
-# Command to run the app
-CMD [ "npm", "run", "dev"]
+CMD ["npm", "start"]

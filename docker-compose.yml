@@ -2,14 +2,38 @@ version: '3.8'
 
 services:
   app:
-    container_name: chatfusion
+    container_name: chatfusion-prod
     env_file:
-      - .env
+      - .env  # Use production environment variables
     build:
       context: .
       dockerfile: Dockerfile
+      target: production  # Explicitly target the production stage
     ports:
       - "3000:3000"
-    volumes:
-      - .:/usr/src/app  # Optional: for live development
-    command: npm run dev
+    restart: unless-stopped
+    # NO volume mounts - we want the built image, not live code
+    environment:
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Optional: Add a database service if needed
+  # database:
+  #   image: postgres:15-alpine
+  #   container_name: chatfusion-db
+  #   environment:
+  #     POSTGRES_DB: chatfusion
+  #     POSTGRES_USER: your_user
+  #     POSTGRES_PASSWORD: your_password
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+
+# volumes:
+#   postgres_data:
